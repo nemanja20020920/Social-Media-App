@@ -1,0 +1,130 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    --logo-font-family: 'Pacifico', cursive;
+    --logo-description-font: 'Caveat', cursive;
+    --ubuntu-font-family: 'Ubuntu', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 20px;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+body.app-body {
+    width: 100vw;
+    height: 100vh;
+    background-image: url(./slike/background1.jpg);
+    background-size: cover;
+    transition: background-image .5s ease-in-out;
+}
+
+body.app-body::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .4);
+    z-index: -1;
+}
+
+.logo > h1 {
+    font: 400 4rem var(--logo-font-family);
+    color: #edf2fb;
+    transform: translateY(-85px);
+    opacity: 0;
+    transition: all .5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.logo > h2 {
+    font: 400 3rem var(--logo-description-font);
+    color: #edf2fb;
+}
+
+header.logo > h2 > span#left-description {
+    display: inline-block;
+    transition: all .5s linear;
+    transform: translateX(-100vw);
+}
+
+header.logo > h2 > span#right-description {
+    display: inline-block;
+    transition: all .5s linear;
+    transform: translateX(100vw);
+}
+
+.login-wrapper {
+    margin-top: 2rem;
+    padding: 4rem;
+    width: 50%;
+    background-color: rgba(248, 249, 250, .8);
+    border: 1px solid grey;
+    border-radius: 1rem;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
+}
+
+#registerBtn {
+    display: block;
+}
+
+.register-modal {
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, .8);
+}
+
+.register-wrapper {
+    position: relative;
+    width: 60%;
+    height: 90%;
+    background-color: #f8f9fa;
+    z-index: 2;
+    border: none;
+    border-radius: 2rem;
+}
+
+#registerForm > div {
+    width: 100%;
+}
+
+#registerForm button {
+    background-color: green;
+    width: 50%;
+}
+
+.btn-close {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    transform: translate(-5%, -5%);
+}
+
+.register-modal.closed {
+    display: none !important;
+}
+
+ul > *{
+    font-size: .7rem;
+}
+
+div[role = 'alert'] {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -20vh);
+    transition: all .5s ease-in-out;
+    z-index: 2;
+}
