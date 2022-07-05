@@ -128,3 +128,8 @@ div[role = 'alert'] {
     transition: all .5s ease-in-out;
     z-index: 2;
 }
+
+.feed-body {
+    background-color: rgb(254, 252, 251);
+}
+
