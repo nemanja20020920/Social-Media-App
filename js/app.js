@@ -102,6 +102,9 @@ const config = {
 let validation = new Validation(config, '#registerForm');
 //FORM VALIDATION END 
 
+
+
+//REGISTER FORM BEGINING
 let registerForm = document.querySelector('#registerForm');
 
 registerForm.addEventListener('submit', e => {
@@ -120,7 +123,11 @@ registerForm.addEventListener('submit', e => {
         alertPopUp('Form invalid!');
     }
 });
+//REGISTER FORM END
 
+
+
+//LOGIN FORM BEGINING
 let loginForm = document.querySelector('#loginForm');
 
 loginForm.addEventListener('submit', e => {
@@ -137,3 +144,4 @@ loginForm.addEventListener('submit', e => {
         alertPopUp('Form invalid!');
     }
 });
+//LOGIN FORM END
