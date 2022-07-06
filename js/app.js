@@ -4,21 +4,6 @@ let session_id = session.getSession();
 if(session_id != '') window.location.href = 'nmedia.html';
 
 
-//FUNCTIONS
-
-const alertPopUp = alertText => {
-    let alertBox = document.querySelector('div[role="alert"]');
-    alertBox.innerHTML = `<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-    <div>
-      ${alertText}
-    </div>`;
-    alertBox.style.transform = 'translate(-50%, 10%)';
-    setTimeout(() => {
-        alertBox.style.transform = 'translate(-50%, -20vh)';
-    }, 2000);
-}
-
-
 //ONLOAD ANIMATIONS BEGINING
 window.addEventListener('load', () => {
     const logo = document.querySelector('.logo > h1');

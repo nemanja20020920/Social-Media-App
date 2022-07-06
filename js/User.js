@@ -12,20 +12,38 @@ class User {
                 if(user.username === this.username) userExists = true;
             });
             if(userExists) {
-                let alertBox = document.querySelector('div[role="alert"]');
-                alertBox.innerHTML = `<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                <div>
-                  Username or email already taken!
-                </div>`;
-                alertBox.style.transform = 'translate(-50%, 10%)';
-                setTimeout(() => {
-                    alertBox.style.transform = 'translate(-50%, -20vh)';
-                }, 2000);
+                alertPopUp('Username or email already taken!');
             } else {
                 user.create();
                 form.reset();
             }
         });
+    }
+
+    validateUserEdit(user_id) {
+        let userExists = false;
+        let alertPopUpText;
+        fetch(this.api_url + '/users').then(response => response.json()).then(data => {
+            data.forEach(user => {
+                if(user.id != user_id) {
+                    if(user.username === this.username || user.email === this.email) {
+                        userExists = true;
+                        alertPopUpText = 'Username or email already taken!';
+                    }
+                } 
+                if(user.id == user_id) {
+                    if(user.username === this.username && user.email === this.email) {
+                        userExists = true;
+                        alertPopUpText = 'You must change at least one value!';
+                    }
+                }
+            });
+            if(!userExists) {
+                this.edit(user_id);
+            } else {
+                alertPopUp(alertPopUpText);
+            }
+        })
     }
 
     create() {
@@ -53,29 +71,46 @@ class User {
     }
 
     login() {
-        let userExists = false;
         fetch(this.api_url + '/users').then(response => response.json()).then(data => {
+            let userExists = false;
             data.forEach(user => {
-                if(user.email === this.email && user.password === this.password) userExists = true;
-                if(userExists) {
+                if(user.email === this.email && user.password === this.password) {
                     let session = new Session();
                     session.user_id = user.id;
                     session.startSession();
                     window.location.href = 'nmedia.html';
+                    userExists = true;
                 }
             });
             
             if(!userExists) {
-                let alertBox = document.querySelector('div[role="alert"]');
-                alertBox.innerHTML = `<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                <div>
-                  Wrong email or username!
-                </div>`;
-                alertBox.style.transform = 'translate(-50%, 10%)';
-                setTimeout(() => {
-                    alertBox.style.transform = 'translate(-50%, -20vh)';
-                }, 2000);
+                alertPopUp('Wrong email or username!');
             }
+        });
+    }
+
+    async get(user_id) {
+        let response = await fetch(this.api_url + '/users/' + user_id);
+        let data = await response.json();
+        return data;
+    }
+
+    edit(user_id) {
+        let data = {
+            username: this.username,
+            email: this.email
+        }
+        data = JSON.stringify(data);
+
+        fetch(this.api_url + '/users/' + user_id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: data
+        }).then(response => response.json()).then(data => {
+            window.location.href = 'nmedia.html';
+            console.log(data);
         });
     }
 }

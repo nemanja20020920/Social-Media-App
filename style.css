@@ -2,6 +2,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: 'Ubuntu', sans-serif;
     --logo-font-family: 'Pacifico', cursive;
     --logo-description-font: 'Caveat', cursive;
     --ubuntu-font-family: 'Ubuntu', sans-serif;
@@ -44,21 +45,20 @@ body.app-body::before {
     transition: all .5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 
-.logo > h2 {
-    font: 400 3rem var(--logo-description-font);
-    color: #edf2fb;
-}
-
 header.logo > h2 > span#left-description {
     display: inline-block;
     transition: all .5s linear;
     transform: translateX(-100vw);
+    font: 400 3rem var(--logo-description-font) !important;
+    color: #edf2fb;
 }
 
 header.logo > h2 > span#right-description {
     display: inline-block;
     transition: all .5s linear;
     transform: translateX(100vw);
+    font: 400 3rem var(--logo-description-font) !important;
+    color: #edf2fb;
 }
 
 .login-wrapper {
@@ -112,12 +112,13 @@ header.logo > h2 > span#right-description {
     transform: translate(-5%, -5%);
 }
 
-.register-modal.closed {
+div.closed {
     display: none !important;
 }
 
 ul > *{
     font-size: .7rem;
+    color: #e63946;
 }
 
 div[role = 'alert'] {
@@ -133,3 +134,69 @@ div[role = 'alert'] {
     background-color: rgb(254, 252, 251);
 }
 
+.feed-body .col-md-3 {
+    padding: 1rem;
+}
+
+.user-data {
+    padding: 3rem;
+    border: none;
+    border-radius: 2rem;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+#profile-picture {
+    width: 100%;
+    border-radius: 50%;
+}
+
+#feed-logo {
+    font: 400 2rem var(--logo-font-family);
+}
+
+.feed-content {
+    padding: 3rem;
+}
+
+.post-form {
+    padding: 1rem;
+}
+
+#editForm > div {
+    width: 100%;
+}
+
+.post-form {
+    border-radius: 2rem;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.single-post {
+    padding: .2rem;
+    border-radius: 2rem;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    transform: translateX(100vw);
+    transition: transform .5s linear;
+}
+
+.user-info {
+    padding: .5rem;
+    border-bottom: 1px solid #2f3e46;
+}
+
+.user-info img {
+    width: 5%;
+    border-radius: 50%;
+}
+
+.user-info h3 {
+    font-size: 1rem;
+}
+
+.post-content {
+    padding: 2rem;
+}
+
+.post-actions {
+    padding: 1rem;
+}
