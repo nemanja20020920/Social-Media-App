@@ -200,3 +200,29 @@ div[role = 'alert'] {
 .post-actions {
     padding: 1rem;
 }
+
+.post-comments {
+    padding: 1rem;
+}
+
+.comment-author {
+    border-bottom: 1px solid #2f3e46;
+}
+
+.comment-author img {
+    width: 4%;
+    border-radius: 50%;
+}
+
+.comment-author h4 {
+    font-size: 1rem;
+}
+
+.comment-content {
+    padding: .5rem;
+}
+
+.single-comment {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}

@@ -12,7 +12,8 @@ const alertPopUp = alertText => {
         alertBox.style.transform = 'translate(-50%, -20vh)';
     }, 2000);
 }
-//
+
+
 
 //Async function that generates user data onload
 async function displayUserData(user_id, userDataPlaceholder) {
@@ -83,6 +84,19 @@ async function createPost(post, user_id) {
     <button type="button" class="btn btn-info btn-sm" id="see-comments-btn" data-post_id="${post.id}" onclick="displayComments(this)">Comments</button>
     <button type="button" class="btn btn-danger btn-sm" id="delete-post-btn" data-post_id="${post.id}" onclick="deletePost(this)"><i class="bi bi-trash"></i></button>
   </div>
+  <div class="post-comments d-none">
+    <div class="comments-form-wrapper">
+      <form id="commentForm" class="d-flex flex-column justify-content-center gap-3">
+        <div class="form-floating">
+          <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+          <label for="floatingTextarea">Comment this post</label>
+        </div>
+        <button type="submit" class="btn btn-info btn-sm align-self-end" onclick="commentPost(this)">Comment!</button>
+      </form>
+    </div>
+    <div class="comments-wrapper mt-3 p-2">
+    </div>
+  </div>
   `;
   postsFeed.appendChild(newPost);
   setTimeout(() => {
@@ -106,10 +120,10 @@ async function getPostLikes(post_id, likeBtn, session_id) {
   post.user_id = session_id;
   post.id = post_id;
   post = await post.like();
-  likeBtn.innerHTML = `${post.likes} Like <i class="bi bi-hand-thumbs-up"></i>`;
+  likeBtn.innerHTML = `${post.likes} Likes <i class="bi bi-hand-thumbs-up"></i>`;
 }
 
-//Async function that generates posts on load
+//Async functions that generate posts on load
 async function displayPosts(session_id) {
   let allPosts = new Post();
   allPosts = await allPosts.getPosts();
@@ -122,12 +136,52 @@ async function generatePosts(post, session_id) {
   let postCreator = new User();
   postCreator = await postCreator.get(post.user_id);
 
+
+  let comments = new Comment();
+  comments = await comments.get(post.id);
+  let commentsHTML = ``;
+  for(let comment of comments) {
+
+    let commentAuthor = new User();
+    commentAuthor = await commentAuthor.get(comment.user_id);
+    if(commentAuthor.id == session_id) {
+    commentsHTML += `
+      <div class="single-comment" data-user_id="${comment.user_id}" data-post_id="${comment.post_id}" data-comment_id="${comment.id}">
+        <div class="comment-author d-flex align-items-center justify-content-start gap-2">
+          <img src="slike/profile-picture.jpg" alt="Profile picture">
+          <h4>${commentAuthor.username}</h4>
+        </div>
+        <div class="comment-content">
+          <p>${comment.content}</p>
+        </div>
+        <div class="comment-actions d-flex align-items-center justify-content-end">
+          <button type="button" class="btn btn-danger btn-sm" id="delete-comment-btn" data-comment_id="" onclick="deleteComment(this)"><i class="bi bi-trash"></i></button>
+        </div>
+      </div>
+    `;
+    } else {
+      commentsHTML += `
+      <div class="single-comment" data-user_id="${comment.user_id}" data-post_id="${comment.post_id}" data-comment_id="${comment.id}">
+        <div class="comment-author d-flex align-items-center justify-content-start gap-2">
+          <img src="slike/profile-picture.jpg" alt="Profile picture">
+          <h4>${commentAuthor.username}</h4>
+        </div>
+        <div class="comment-content">
+          <p>${comment.content}</p>
+        </div>
+      </div>
+    `
+    }
+
+  }
+
   let postsFeed = document.querySelector('.posts');
   let newPost = document.createElement('div');
   newPost.className = 'single-post my-3';
   newPost.setAttribute('data-user_id', `${post.user_id}`);
   newPost.setAttribute('data-post_id', `${post.id}`);
-  let likesBtnHTML = `<button type="button" class="btn btn-primary btn-sm" id="like-post-btn" data-post_id="${post.id}" onclick="likePost(this)">${post.likes} Like <i class="bi bi-hand-thumbs-up"></i></button>`;
+
+  let likesBtnHTML = `<button type="button" class="btn btn-primary btn-sm" id="like-post-btn" data-post_id="${post.id}" onclick="likePost(this)">${post.likes} Likes <i class="bi bi-hand-thumbs-up"></i></button>`;
   let deleteBtnHTMl = ``;
   if(post.liked.includes(session_id)) {
     likesBtnHTML = `<button type="button" class="btn btn-primary btn-sm" id="like-post-btn" data-post_id="${post.id}" onclick="likePost(this)" disabled="disabled">${post.likes} Likes <i class="bi bi-hand-thumbs-up"></i></button>`
@@ -149,9 +203,47 @@ async function generatePosts(post, session_id) {
     <button type="button" class="btn btn-info btn-sm" id="see-comments-btn" data-post_id="${post.id}" onclick="displayComments(this)">Comments</button>
     ${deleteBtnHTMl}
   </div>
+  <div class="post-comments d-none">
+    <div class="comments-form-wrapper">
+      <form id="commentForm" class="d-flex flex-column justify-content-center gap-3">
+        <div class="form-floating">
+          <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+          <label for="floatingTextarea">Comment this post</label>
+        </div>
+        <button type="submit" class="btn btn-info btn-sm align-self-end" onclick="commentPost(event)">Comment!</button>
+      </form>
+    </div>
+    <div class="comments-wrapper mt-3 p-2">
+      ${commentsHTML}
+    </div>
+  </div>
   `;
+
   postsFeed.appendChild(newPost);
   setTimeout(() => {
     newPost.style.transform = 'translateX(0)';
   }, 1);
+}
+
+//Async function that generates user data
+async function commentPostSubmit(comment, post, post_id, user_id) {
+  let currentUser = new User();
+  currentUser = await currentUser.get(user_id);
+  let commentsFeed = post.querySelector('.comments-wrapper');
+  let newComment = document.createElement('div');
+  newComment.setAttribute('data-post_id', post_id);
+  newComment.setAttribute('data-user_id', session_id);
+  newComment.setAttribute('data-comment_id', comment.id);
+  newComment.className = 'single-comment';
+  newComment.innerHTML = `<div class="comment-author d-flex align-items-center justify-content-start gap-2">
+  <img src="slike/profile-picture.jpg" alt="Profile picture">
+  <h4>${currentUser.username}</h4>
+  </div>
+  <div class="comment-content">
+  <p>${comment.content}</p>
+  </div>
+  <div class="comment-actions d-flex align-items-center justify-content-end">
+  <button type="button" class="btn btn-danger btn-sm" id="delete-comment-btn" data-comment_id="" onclick="deleteComment(this)"><i class="bi bi-trash"></i></button>
+  </div>`
+  commentsFeed.appendChild(newComment);
 }
