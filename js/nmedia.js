@@ -72,9 +72,20 @@ postForm.addEventListener('submit', e => {
 //Liking the post
 const likePost = btn => {
     let post_id = btn.getAttribute('data-post_id');
-    btn.setAttribute('disabled', 'disabled');
-    getPostLikes(post_id, btn, session_id);
+    btn.setAttribute('onclick', 'dislikePost(this)');
+    likeThePost(post_id, btn, session_id);
 };
+//
+
+
+
+//Unliking the post
+const dislikePost = btn => {
+    let post_id = btn.getAttribute('data-post_id');
+    btn.setAttribute('onclick', 'likePost(this)');
+    dislikeThePost(post_id, btn, session_id);
+}
+//
 
 //Comments btn click
 const displayComments = btn => {
@@ -99,12 +110,33 @@ const commentPost = e => {
         comment.user_id = session_id;
         comment.content = content;
         comment.create();
-        commentPostSubmit(comment, post, post_id, session_id);
+        async function commentPostSubmit() {
+            let currentUser = new User();
+            currentUser = await currentUser.get(session_id);
+            let commentsFeed = post.querySelector('.comments-wrapper');
+            let newComment = document.createElement('div');
+            newComment.setAttribute('data-post_id', post_id);
+            newComment.setAttribute('data-user_id', session_id);
+            newComment.setAttribute('data-comment_id', comment.id);
+            newComment.className = 'single-comment';
+            newComment.innerHTML = `<div class="comment-author d-flex align-items-center justify-content-start gap-2">
+            <img src="slike/profile-picture.jpg" alt="Profile picture">
+            <h4>${currentUser.username}</h4>
+            </div>
+            <div class="comment-content">
+            <p>${comment.content}</p>
+            </div>
+            <div class="comment-actions d-flex align-items-center justify-content-end">
+            <button type="button" class="btn btn-danger btn-sm" id="delete-comment-btn" data-comment_id="" onclick="deleteComment(this)"><i class="bi bi-trash"></i></button>
+            </div>`
+            commentsFeed.appendChild(newComment);
+        }
+        commentPostSubmit();
         form.reset();
     } else {
         alertPopUp('Form invalid!');
     }
-}
+};
 
 //Deleting the comment
 const deleteComment = btn => {
@@ -112,4 +144,16 @@ const deleteComment = btn => {
     let comment_id = commentEl.getAttribute('data-comment_id');
     let comment = new Comment();
     comment.delete(comment_id);
-}
+    commentEl.remove();
+};
+
+//Deleting the user
+const deleteUser = btn => {
+
+    if(confirm('Are you sure that you want to delete your profile?')) {
+        let user = new User();
+        user.id = session_id;
+        user.delete();
+    }
+};
+//

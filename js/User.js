@@ -113,4 +113,36 @@ class User {
             console.log(data);
         });
     }
+
+    delete() {
+        fetch(this.api_url + '/users/' + this.id).then(response => response.json()).then(user_data => {
+
+            fetch(this.api_url + '/comments').then(response => response.json()).then(comments_data => {
+                comments_data.forEach(comment => {
+                    if(comment.user_id == user_data.id) {
+                        console.log('Comments', comment);
+                        let commentToDelete = new Comment();
+                        commentToDelete.delete(comment.id);
+                    }
+                });
+            });
+
+            fetch(this.api_url + '/posts').then(response => response.json()).then(posts_data => {
+                posts_data.forEach(post => {
+                    if(post.user_id == user_data.id) {
+                        console.log('Posts', post);
+                        let postToDelete = new Post();
+                        postToDelete.id = post.id;
+                        postToDelete.delete()
+                    }
+                });
+            });
+
+            fetch(this.api_url + '/users/' + user_data.id, {
+                method: 'DELETE'
+            }).then(response => response.json()).then(data => {
+                session.destroySession();
+            });
+        });
+    }
 }

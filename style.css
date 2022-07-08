@@ -6,6 +6,7 @@
     --logo-font-family: 'Pacifico', cursive;
     --logo-description-font: 'Caveat', cursive;
     --ubuntu-font-family: 'Ubuntu', sans-serif;
+    --posts-background-color: ;
 }
 
 html {
@@ -225,4 +226,12 @@ div[role = 'alert'] {
 .single-comment {
     margin-top: 2rem;
     margin-bottom: 2rem;
+}
+
+.delete-user {
+    width: 100%;
+}
+
+#deleteUser {
+    width: 100%;
 }

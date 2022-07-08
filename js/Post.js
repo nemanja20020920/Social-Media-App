@@ -70,4 +70,32 @@ class Post {
         let data = response.json();
         return data;
     }
+
+    async dislike() {
+        let response = await fetch(this.api_url + '/posts/' + this.id);
+        let data = await response.json();
+
+        let likes = data.likes;
+        likes--;
+        
+        let liked = data.liked;
+        liked.pop(this.user_id);
+
+        data = {
+            likes: likes,
+            liked: liked
+        }
+
+        data = JSON.stringify(data);
+        response = await fetch(this.api_url + '/posts/' + this.id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: data
+        });
+        data = await response.json();
+
+        return data;
+    }
 }

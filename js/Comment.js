@@ -18,12 +18,10 @@ class Comment {
                 'Content-Type': 'application/json'
             },
             body: data
-        }).then(response => response.json()).then(data => {
-            this.id = data.id;
-        });
+        }).then(response => response.json()).then(data => data);
     }
 
-    async get(post_id) {
+    async get(post_id ) {
         let comments = [];
         let index = 0;
         let response = await fetch(this.api_url + '/comments');
