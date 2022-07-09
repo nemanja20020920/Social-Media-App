@@ -46,10 +46,8 @@ async function displayUserData(user_id, userDataPlaceholder) {
 
   logOutBtn.addEventListener('click', e => {
     e.preventDefault();
-
-    let confirmationText = 'Are you sure that you want to log out?';
     
-    if(confirm(confirmationText)) session.destroySession();
+    session.destroySession();
   });
 }
 //
