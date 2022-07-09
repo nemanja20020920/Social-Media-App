@@ -1,2 +1,2 @@
 # Social Media App
-Social Media App project that I am working on.
+Social Media App project that I made.
