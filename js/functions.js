@@ -26,11 +26,11 @@ async function displayUserData(user_id, userDataPlaceholder) {
   <img src="slike/profile-picture.jpg" alt="Profile picture" id="profile-picture">
   <span id="username-data">${user['username']}</span>
   <div class="user-actions mt-3 d-flex alig-items-center justify-content-evenly gap-3">
-      <button class="btn btn-sm btn-outline-info d-flex align-items-center justify-content-center" id="editProfileBtn">Edit<i class="bi bi-pencil-square ms-1"></i></button>
+      <button class="btn btn-sm btn-outline-dark d-flex align-items-center justify-content-center" id="editProfileBtn">Edit<i class="bi bi-pencil-square ms-1"></i></button>
       <button class="btn btn-sm btn-outline-dark d-flex align-items-center justify-content-center" id="logOutBtn">Logout<i class="bi bi-box-arrow-right ms-1"></i></button>
   </div>
   <div class="delete-user d-flex align-items-center justify-content-center">
-    <button type="button" class="btn btn-outline-danger btn-sm" onclick="deleteUser(this)">Delete profile</button>
+    <button type="button" class="btn btn-outline-danger btn-sm" onclick="deleteUser(this)">Delete profile <i class="bi bi-person-x"></i></button>
   </div>
   `; 
   

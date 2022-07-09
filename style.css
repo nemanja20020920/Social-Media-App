@@ -147,7 +147,9 @@ div[role = 'alert'] {
 }
 
 #profile-picture {
-    width: 100%;
+    width: 7rem;
+    height: 7rem;
+    object-fit: cover;
     border-radius: 50%;
 }
 
@@ -186,7 +188,9 @@ div[role = 'alert'] {
 }
 
 .user-info img {
-    width: 5%;
+    width: 2rem;
+    height: 2rem;
+    object-fit: cover;
     border-radius: 50%;
 }
 
@@ -207,11 +211,14 @@ div[role = 'alert'] {
 }
 
 .comment-author {
+    padding: .5rem;
     border-bottom: 1px solid #2f3e46;
 }
 
 .comment-author img {
-    width: 4%;
+    width: 1.5rem;
+    height: 1.5rem;
+    object-fit: cover;
     border-radius: 50%;
 }
 

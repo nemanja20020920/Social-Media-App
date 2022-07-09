@@ -127,6 +127,20 @@ class User {
                 });
             });
 
+
+            fetch(this.api_url + '/posts').then(response => response.json()).then(posts_data => {
+                posts_data.forEach(post => {
+                    if(post.liked.includes(user_data.id)) {
+                        let postEl = document.querySelector(`.single-post[data-post_id="${post.id}"]`);
+                        console.log(postEl)
+                        let likeBtn = postEl.closest('#like-post-btn');
+                        console.log(likeBtn);
+                        dislikeThePost(post.id, likeBtn, user_data.id);
+                    } 
+                });
+            });
+            
+
             fetch(this.api_url + '/posts').then(response => response.json()).then(posts_data => {
                 posts_data.forEach(post => {
                     if(post.user_id == user_data.id) {
@@ -137,6 +151,7 @@ class User {
                     }
                 });
             });
+
 
             fetch(this.api_url + '/users/' + user_data.id, {
                 method: 'DELETE'
